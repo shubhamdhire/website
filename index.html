@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shubham Dhire — Frontend & WordPress Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple: #7C3AED;
+    --purple-light: #A78BFA;
+    --purple-dark: #4C1D95;
+    --teal: #0D9488;
+    --teal-light: #5EEAD4;
+    --teal-dark: #0F766E;
+    --bg: #0A0A0F;
+    --bg2: #11111A;
+    --bg3: #18182A;
+    --surface: #1E1E30;
+    --surface2: #252538;
+    --border: rgba(124,58,237,0.18);
+    --border2: rgba(124,58,237,0.35);
+    --text: #F0EEFF;
+    --text2: #A99DC8;
+    --text3: #6B618E;
+    --font-head: 'inter', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── GRADIENT ORBS ── */
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.25;
+  }
+  .orb-1 { width: 600px; height: 600px; background: var(--purple); top: -200px; left: -200px; }
+  .orb-2 { width: 500px; height: 500px; background: var(--teal); bottom: -150px; right: -150px; }
+  .orb-3 { width: 300px; height: 300px; background: var(--purple-light); top: 40%; left: 60%; opacity: 0.12; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background: rgba(10,10,15,0.7);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-logo {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 18px;
+    color: var(--text);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+  }
+  .nav-logo span { color: var(--purple-light); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: var(--text2);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--teal-light); }
+
+  /* ── WRAPPER ── */
+  .wrapper { position: relative; z-index: 1; }
+  section { padding: 6rem 2rem; max-width: 1100px; margin: 0 auto; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: 80px;
+  }
+  .hero-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(124,58,237,0.12);
+    border: 1px solid var(--border2);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--purple-light);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--teal-light);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+  .hero-name {
+    font-family: var(--font-head);
+    font-size: clamp(2.8rem, 6vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+  .hero-name .accent { color: var(--purple-light); }
+  .hero-title {
+    font-family: var(--font-head);
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    font-weight: 500;
+    color: var(--teal-light);
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.01em;
+  }
+  .hero-bio {
+    color: var(--text2);
+    font-size: 15px;
+    line-height: 1.8;
+    max-width: 480px;
+    margin-bottom: 2.5rem;
+  }
+  .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--purple);
+    color: #fff;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-primary:hover { background: #6D28D9; transform: translateY(-1px); }
+  .btn-outline {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border2);
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: border-color 0.2s, background 0.2s;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-outline:hover { border-color: var(--teal-light); color: var(--teal-light); background: rgba(13,148,136,0.07); }
+
+  /* HERO STATS */
+  .hero-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .stat-card:hover { border-color: var(--border2); transform: translateY(-2px); }
+  .stat-number {
+    font-family: var(--font-head);
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--purple-light);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label { font-size: 13px; color: var(--text2); }
+  .stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+  /* ── SECTION HEADER ── */
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--teal-light);
+    margin-bottom: 0.75rem;
+  }
+  .section-label::before {
+    content: '';
+    width: 24px; height: 1px;
+    background: var(--teal-light);
+  }
+  .section-title {
+    font-family: var(--font-head);
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 3rem;
+    line-height: 1.1;
+  }
+  .section-title span { color: var(--purple-light); }
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0;
+  }
+
+  /* ── ABOUT ── */
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+  .about-text { color: var(--text2); line-height: 1.9; }
+  .about-text p { margin-bottom: 1rem; }
+  .skills-cloud { display: flex; flex-wrap: wrap; gap: 10px; }
+  .skill-tag {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 13px;
+    color: var(--text2);
+    font-weight: 400;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+  }
+  .skill-tag:hover { border-color: var(--purple-light); color: var(--purple-light); background: rgba(124,58,237,0.08); }
+  .skill-tag.teal:hover { border-color: var(--teal-light); color: var(--teal-light); background: rgba(13,148,136,0.08); }
+
+  /* ── EXPERIENCE ── */
+  .timeline { position: relative; padding-left: 2rem; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 8px; bottom: 8px;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--purple), var(--teal));
+    opacity: 0.4;
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 2.5rem;
+    padding-left: 1.5rem;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2.4rem; top: 6px;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--purple-light);
+    border: 2px solid var(--bg);
+    box-shadow: 0 0 0 3px rgba(167,139,250,0.2);
+  }
+  .timeline-item:first-child::before { background: var(--teal-light); box-shadow: 0 0 0 3px rgba(94,234,212,0.2); }
+  .timeline-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+  .timeline-role {
+    font-family: var(--font-head);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .timeline-company {
+    font-size: 13px;
+    color: var(--teal-light);
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+  }
+  .timeline-date {
+    font-size: 12px;
+    color: var(--text3);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 3px 10px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .timeline-desc { font-size: 14px; color: var(--text2); line-height: 1.75; }
+
+  /* ── EDUCATION ── */
+  .edu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .edu-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.75rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .edu-card:hover { border-color: var(--border2); transform: translateY(-2px); }
+  .edu-icon {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    background: rgba(124,58,237,0.15);
+    border: 1px solid rgba(124,58,237,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    margin-bottom: 1rem;
+  }
+  .edu-degree {
+    font-family: var(--font-head);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .edu-school { font-size: 13px; color: var(--teal-light); margin-bottom: 4px; }
+  .edu-years { font-size: 12px; color: var(--text3); }
+
+  /* ── SKILLS SECTION ── */
+  .skills-section { }
+  .skill-group { margin-bottom: 2.5rem; }
+  .skill-group-title {
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--purple-light);
+    margin-bottom: 1rem;
+  }
+  .skills-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+  .skill-pill {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 7px 18px;
+    font-size: 13px;
+    color: var(--text2);
+    transition: all 0.2s;
+    display: flex; align-items: center; gap: 7px;
+  }
+  .skill-pill::before {
+    content: '';
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--teal-light);
+    flex-shrink: 0;
+  }
+  .skill-pill:hover { border-color: var(--teal-light); color: var(--teal-light); background: rgba(13,148,136,0.07); }
+
+  /* ── PROJECTS ── */
+  .projects-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+  .project-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: border-color 0.25s, transform 0.25s;
+  }
+  .project-card:hover { border-color: var(--border2); transform: translateY(-3px); }
+  .project-frame-wrapper {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    background: var(--bg3);
+    overflow: hidden;
+  }
+  .project-frame-wrapper iframe {
+    width: 200%;
+    height: 200%;
+    border: none;
+    transform: scale(0.5);
+    transform-origin: top left;
+    pointer-events: none;
+  }
+  .frame-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 60%, var(--surface) 100%);
+  }
+  .frame-overlay-top {
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+    z-index: 2;
+  }
+  .project-info { padding: 1.25rem 1.25rem 1.25rem; }
+  .project-url {
+    font-family: var(--font-head);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .project-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--teal-light);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .project-link:hover { color: var(--purple-light); }
+  .project-link svg { width: 12px; height: 12px; }
+
+  /* ── CONTACT ── */
+  .contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 3rem; align-items: start; }
+  .contact-info { display: flex; flex-direction: column; gap: 1.25rem; }
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    transition: border-color 0.2s;
+  }
+  .contact-item:hover { border-color: var(--border2); }
+  .contact-icon {
+    width: 38px; height: 38px;
+    border-radius: 9px;
+    background: rgba(124,58,237,0.12);
+    border: 1px solid rgba(124,58,237,0.25);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 16px;
+  }
+  .contact-item-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 2px; }
+  .contact-item-value { font-size: 14px; color: var(--text); font-weight: 500; }
+  .contact-item-value a { color: var(--teal-light); text-decoration: none; }
+  .contact-item-value a:hover { color: var(--purple-light); }
+
+  /* FORM */
+  .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-label { font-size: 12px; font-weight: 500; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; }
+  .form-input, .form-textarea {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 11px 16px;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    resize: none;
+  }
+  .form-input:focus, .form-textarea:focus { border-color: var(--purple-light); }
+  .form-input::placeholder, .form-textarea::placeholder { color: var(--text3); }
+  .form-textarea { height: 130px; }
+  .form-submit {
+    background: linear-gradient(135deg, var(--purple), var(--teal-dark));
+    color: #fff;
+    border: none;
+    padding: 13px 32px;
+    border-radius: 10px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s;
+    display: inline-flex; align-items: center; gap: 8px;
+    align-self: flex-start;
+  }
+  .form-submit:hover { opacity: 0.9; transform: translateY(-1px); }
+  .form-success {
+    display: none;
+    background: rgba(13,148,136,0.12);
+    border: 1px solid rgba(13,148,136,0.3);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--teal-light);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative; z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 2rem;
+    text-align: center;
+    color: var(--text3);
+    font-size: 13px;
+  }
+  footer span { color: var(--purple-light); }
+
+  /* ── SCROLL ANIMATIONS ── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 0 1rem; }
+    .nav-links { display: none; }
+    section { padding: 4rem 1rem; }
+    .hero-inner, .about-grid, .edu-grid, .projects-grid, .contact-grid, .form-row { grid-template-columns: 1fr; }
+    .hero-stats { flex-direction: row; flex-wrap: wrap; }
+    .stat-row { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Ambient orbs -->
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<!-- Navigation -->
+<nav>
+  <a href="#hero" class="nav-logo">SDD<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="mailto:dhireshubham9921@gmail.com" class="btn-primary" style="padding:8px 20px;font-size:13px;">Hire Me</a>
+</nav>
+
+<div class="wrapper">
+
+  <!-- ── HERO ── -->
+  <section id="hero">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-badge">Available for projects</div>
+        <h1 class="hero-name">Shubham<br><span class="accent">Dhire</span></h1>
+        <p class="hero-title">Frontend Developer · WordPress · SEO Specialist</p>
+        <p class="hero-bio">Building fast, SEO-optimized, and high-converting WordPress websites with a focus on performance, UI/UX, and business growth.</p>
+        <div class="hero-ctas">
+          <a href="#projects" class="btn-primary">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+            View Projects
+          </a>
+          <a href="#contact" class="btn-outline">Get in Touch</a>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-row">
+          <div class="stat-card">
+            <div class="stat-number">3+</div>
+            <div class="stat-label">Years Experience</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">20+</div>
+            <div class="stat-label">Websites Delivered</div>
+          </div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-card">
+            <div class="stat-number">30%</div>
+            <div class="stat-label">Speed Improvement</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">20%</div>
+            <div class="stat-label">Organic Traffic Boost</div>
+          </div>
+        </div>
+        <div class="stat-card" style="text-align:center;">
+          <div style="font-size:13px; color:var(--text2); margin-bottom:8px;">Currently working at</div>
+          <div style="display:flex;justify-content:center;gap:1.5rem;font-size:14px;font-weight:600;color:var(--text);">
+            <span>The Vanilla Theory</span>
+            <!-- <span style="color:var(--border2)">·</span>
+            <span>Sales Cliff Media</span> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ── ABOUT ── -->
+  <section id="about">
+    <div class="fade-in">
+      <div class="section-label">About Me</div>
+      <h2 class="section-title">Who I <span>Am</span></h2>
+    </div>
+    <div class="about-grid fade-in">
+      <div class="about-text">
+        <p>I'm a Frontend & WordPress Developer based in Pune, Maharashtra, with over 3 years of hands-on experience building high-performance, SEO-driven websites for B2B companies, startups, and media brands.</p>
+        <p>My work sits at the intersection of clean code, conversion optimization, and search performance. I've led development teams, improved site speeds by up to 30%, and consistently delivered measurable results in traffic and engagement.</p>
+        <p>Whether it's a landing page, a complex B2B publication platform, or a custom WordPress theme — I bring both technical depth and design sensibility to every project.</p>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:1rem;">Core Competencies</div>
+        <div class="skills-cloud">
+          <span class="skill-tag">WordPress</span>
+          <span class="skill-tag teal">Frontend Dev</span>
+          <span class="skill-tag">SEO</span>
+          <span class="skill-tag teal">Performance</span>
+          <span class="skill-tag">UI/UX</span>
+          <span class="skill-tag teal">Core Web Vitals</span>
+          <span class="skill-tag">Elementor</span>
+          <span class="skill-tag teal">Landing Pages</span>
+          <span class="skill-tag">Figma</span>
+          <span class="skill-tag teal">Google Analytics</span>
+          <span class="skill-tag">B2B Platforms</span>
+          <span class="skill-tag teal">SSL & Hosting</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ── EXPERIENCE ── -->
+  <section id="experience">
+    <div class="fade-in">
+      <div class="section-label">Career</div>
+      <h2 class="section-title">Work <span>Experience</span></h2>
+    </div>
+    <div class="timeline fade-in">
+
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <div>
+            <div class="timeline-company">The Vanilla Theory</div>
+            <div class="timeline-role">WordPress Developer</div>
+          </div>
+          <span class="timeline-date">Jul 2025 – Present</span>
+        </div>
+        <p class="timeline-desc">Developing and maintaining responsive, SEO-friendly websites, handling domain, hosting, SSL setup, performance optimization, and collaborating with teams to deliver conversion-focused websites.</p>
+      </div>
+
+      <!-- <div class="timeline-item">
+        <div class="timeline-header">
+          <div>
+            <div class="timeline-company">Sales Cliff Media Inc.</div>
+            <div class="timeline-role">Freelance Web Developer</div>
+          </div>
+          <span class="timeline-date">Jul 2025 – Present</span>
+        </div>
+        <p class="timeline-desc">Developing high-performance WordPress websites, implementing custom themes/plugins, and improving site speed by 25% using advanced optimization techniques.</p>
+      </div> -->
+
+      <!-- <div class="timeline-item">
+        <div class="timeline-header">
+          <div>
+            <div class="timeline-company">ABM Logic</div>
+            <div class="timeline-role">Freelance Web Developer</div>
+          </div>
+          <span class="timeline-date">Mar 2025 – Present</span>
+        </div>
+        <p class="timeline-desc">Designing and developing responsive WordPress websites, including B2B and publication platforms with deep SEO optimization for organic growth.</p>
+      </div> -->
+
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <div>
+            <div class="timeline-company">Victorious Kidss Educares</div>
+            <div class="timeline-role">Website Developer</div>
+          </div>
+          <span class="timeline-date">Mar 2025 – Jul 2025</span>
+        </div>
+        <p class="timeline-desc">Improved website speed by 30% and increased organic traffic by 20% through targeted SEO and performance optimization strategies.</p>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <div>
+            <div class="timeline-company">Genrix B2B Tech Media</div>
+            <div class="timeline-role">WordPress Tech Lead</div>
+          </div>
+          <span class="timeline-date">Dec 2024 – Mar 2025</span>
+        </div>
+        <p class="timeline-desc">Led a team of 3 developers, improved QA processes, reduced bugs by 25%, and increased user engagement by 18% through strategic platform improvements.</p>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <div>
+            <div class="timeline-company">Demandify Media</div>
+            <div class="timeline-role">WordPress Developer</div>
+          </div>
+          <span class="timeline-date">Jun 2023 – Dec 2024</span>
+        </div>
+        <p class="timeline-desc">Delivered 10+ websites, increased page views by 15%, improved mobile retention by 20%, and reduced downtime by 40% through proactive maintenance and optimization.</p>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <div>
+            <div class="timeline-company">UnboundB2B</div>
+            <div class="timeline-role">WordPress Developer (Intern)</div>
+          </div>
+          <span class="timeline-date">Aug 2022 – Nov 2022</span>
+        </div>
+        <p class="timeline-desc">Built landing pages, improved lead generation by 12%, and assisted in performance optimization across multiple client websites.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ── EDUCATION ── -->
+  <section id="education">
+    <div class="fade-in">
+      <div class="section-label">Academic</div>
+      <h2 class="section-title">My <span>Education</span></h2>
+    </div>
+    <div class="edu-grid fade-in">
+      <div class="edu-card">
+        <div class="edu-icon"><img src="white hat.png" width="30px"></div>
+        <div class="edu-degree">B.Tech in Information Technology</div>
+        <div class="edu-school">Parvatibai Genba Moze College of Engineering</div>
+        <div class="edu-years">2020 – 2023</div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-icon"><img src="white hat.png" width="30px"></div>
+        <div class="edu-degree">Diploma in Computer Engineering</div>
+        <div class="edu-school">JSPM University, Pune</div>
+        <div class="edu-years">2017 – 2020</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ── SKILLS ── -->
+  <section id="skills">
+    <div class="fade-in">
+      <div class="section-label">Technical</div>
+      <h2 class="section-title">Skills &amp; <span>Expertise</span></h2>
+    </div>
+    <div class="skills-section fade-in">
+      <div class="skill-group">
+        <div class="skill-group-title">Frontend Development</div>
+        <div class="skills-grid">
+          <span class="skill-pill">HTML5</span>
+          <span class="skill-pill">CSS3</span>
+          <span class="skill-pill">JavaScript</span>
+          <span class="skill-pill">Bootstrap</span>
+          <span class="skill-pill">Responsive Design</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">WordPress Ecosystem</div>
+        <div class="skills-grid">
+          <span class="skill-pill">WordPress Development</span>
+          <span class="skill-pill">Custom Themes</span>
+          <span class="skill-pill">Plugin Development</span>
+          <span class="skill-pill">Elementor</span>
+          <span class="skill-pill">Landing Page Development</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">SEO &amp; Performance</div>
+        <div class="skills-grid">
+          <span class="skill-pill">On-Page SEO</span>
+          <span class="skill-pill">Technical SEO</span>
+          <span class="skill-pill">Core Web Vitals</span>
+          <span class="skill-pill">Website Speed Optimization</span>
+          <span class="skill-pill">Google Analytics</span>
+          <span class="skill-pill">Search Console</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Infrastructure &amp; Tools</div>
+        <div class="skills-grid">
+          <span class="skill-pill">Domain &amp; Hosting Setup</span>
+          <span class="skill-pill">SSL Configuration</span>
+          <span class="skill-pill">Website Maintenance</span>
+          <span class="skill-pill">Security</span>
+          <span class="skill-pill">Figma</span>
+          <span class="skill-pill">Canva</span>
+          <span class="skill-pill">UI/UX Design</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ── PROJECTS ── -->
+  <section id="projects">
+    <div class="fade-in">
+      <div class="section-label">Portfolio</div>
+      <h2 class="section-title">Live <span>Projects</span></h2>
+    </div>
+    <div class="projects-grid fade-in">
+
+      <div class="project-card">
+        <div class="project-frame-wrapper">
+          <iframe src="https://godspeedracing.in/" title="Godspeed Racing" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>
+          <div class="frame-overlay"></div>
+          <div class="frame-overlay-top" onclick="window.open('https://godspeedracing.in/','_blank')"></div>
+        </div>
+        <div class="project-info">
+          <div class="project-url">godspeedracing.in</div>
+          <a href="https://godspeedracing.in/" target="_blank" class="project-link">
+            Visit site
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-frame-wrapper">
+          <iframe src="https://martechlogic.com/" title="Martech Logic" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>
+          <div class="frame-overlay"></div>
+          <div class="frame-overlay-top" onclick="window.open('https://martechlogic.com/','_blank')"></div>
+        </div>
+        <div class="project-info">
+          <div class="project-url">martechlogic.com</div>
+          <a href="https://martechlogic.com/" target="_blank" class="project-link">
+            Visit site
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-frame-wrapper">
+          <iframe src="https://salescliff.com/" title="Sales Cliff" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>
+          <div class="frame-overlay"></div>
+          <div class="frame-overlay-top" onclick="window.open('https://salescliff.com/','_blank')"></div>
+        </div>
+        <div class="project-info">
+          <div class="project-url">salescliff.com</div>
+          <a href="https://salescliff.com/" target="_blank" class="project-link">
+            Visit site
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-frame-wrapper">
+          <iframe src="https://tinkerheadsmarketing.com/" title="Tinkerheads Marketing" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>
+          <div class="frame-overlay"></div>
+          <div class="frame-overlay-top" onclick="window.open('https://tinkerheadsmarketing.com/','_blank')"></div>
+        </div>
+        <div class="project-info">
+          <div class="project-url">tinkerheadsmarketing.com</div>
+          <a href="https://tinkerheadsmarketing.com/" target="_blank" class="project-link">
+            Visit site
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-frame-wrapper">
+          <iframe src="https://realitywarehousing.in/" title="Reality Warehousing" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>
+          <div class="frame-overlay"></div>
+          <div class="frame-overlay-top" onclick="window.open('https://realitywarehousing.in/','_blank')"></div>
+        </div>
+        <div class="project-info">
+          <div class="project-url">realitywarehousing.in</div>
+          <a href="https://realitywarehousing.in/" target="_blank" class="project-link">
+            Visit site
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-frame-wrapper">
+          <iframe src="https://kavya-industries.com/" title="Kavya Industries" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>
+          <div class="frame-overlay"></div>
+          <div class="frame-overlay-top" onclick="window.open('https://kavya-industries.com/','_blank')"></div>
+        </div>
+        <div class="project-info">
+          <div class="project-url">kavya-industries.com</div>
+          <a href="https://kavya-industries.com/" target="_blank" class="project-link">
+            Visit site
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-frame-wrapper">
+          <iframe src="https://abmlogic.com/" title="ABM Logic" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>
+          <div class="frame-overlay"></div>
+          <div class="frame-overlay-top" onclick="window.open('https://abmlogic.com/','_blank')"></div>
+        </div>
+        <div class="project-info">
+          <div class="project-url">abmlogic.com</div>
+          <a href="https://abmlogic.com/" target="_blank" class="project-link">
+            Visit site
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-frame-wrapper">
+          <iframe src="https://hrtechlogic.com/" title="HR Tech Logic" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>
+          <div class="frame-overlay"></div>
+          <div class="frame-overlay-top" onclick="window.open('https://hrtechlogic.com/','_blank')"></div>
+        </div>
+        <div class="project-info">
+          <div class="project-url">hrtechlogic.com</div>
+          <a href="https://hrtechlogic.com/" target="_blank" class="project-link">
+            Visit site
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ── CONTACT ── -->
+  <section id="contact">
+    <div class="fade-in">
+      <div class="section-label">Get in Touch</div>
+      <h2 class="section-title">Let's <span>Connect</span></h2>
+    </div>
+    <div class="contact-grid fade-in">
+      <div class="contact-info">
+        <div class="contact-item">
+          <div class="contact-icon">✉️</div>
+          <div>
+            <div class="contact-item-label">Email</div>
+            <div class="contact-item-value"><a href="mailto:dhireshubham9921@gmail.com">dhireshubham9921@gmail.com</a></div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📱</div>
+          <div>
+            <div class="contact-item-label">Phone</div>
+            <div class="contact-item-value"><a href="tel:+919518550494">+91 9518550494</a></div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📍</div>
+          <div>
+            <div class="contact-item-label">Location</div>
+            <div class="contact-item-value">Pune, Maharashtra, India</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">💼</div>
+          <div>
+            <div class="contact-item-label">LinkedIn</div>
+            <div class="contact-item-value"><a href="https://www.linkedin.com/in/shubham-dhire/" target="_blank">linkedin.com/in/shubham-dhire</a></div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+       <div>
+  <form class="contact-form fade-in" 
+        id="contactForm"
+        action="https://formspree.io/f/mpqkqzkg" 
+        method="POST">
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Name</label>
+        <input type="text" class="form-input" name="name" placeholder="Your name" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-input" name="email" placeholder="your@email.com" required>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Subject</label>
+      <input type="text" class="form-input" name="subject" placeholder="Project inquiry, collaboration...">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Message</label>
+      <textarea class="form-textarea" name="message" placeholder="Tell me about your project..." required></textarea>
+    </div>
+
+    <!-- Optional hidden fields -->
+    <input type="hidden" name="_subject" value="New Portfolio Message">
+    <input type="hidden" name="_captcha" value="false">
+
+    <button type="submit" class="form-submit">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+      </svg>
+      Send Message
+    </button>
+
+    <div class="form-success" id="formSuccess">
+      ✓ Message sent! I'll get back to you within 24 hours.
+    </div>
+
+  </form>
+</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- Footer -->
+<footer>
+  <p>Designed &amp; built by <span>Shubham Dhire</span> · Frontend Developer &amp; WordPress Specialist · Pune, India</p>
+</footer>
+
+<script>
+  // Scroll fade-in
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Contact form
+  function handleSubmit() {
+    const name = document.getElementById('fname').value;
+    const email = document.getElementById('femail').value;
+    const subject = document.getElementById('fsubject').value;
+    const message = document.getElementById('fmessage').value;
+    if (!name || !email || !message) { alert('Please fill in the required fields.'); return; }
+    const mailtoLink = `mailto:dhireshubham9921@gmail.com?subject=${encodeURIComponent(subject || 'Portfolio Inquiry')}&body=${encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\n\n' + message)}`;
+    window.location.href = mailtoLink;
+    document.getElementById('formSuccess').style.display = 'block';
+  }
+</script>
+<script>
+document.getElementById("contactForm").addEventListener("submit", async function(e) {
+  e.preventDefault(); // STOP default Formspree page
+
+  const form = e.target;
+
+  const data = new FormData(form);
+
+  try {
+    const response = await fetch("https://formspree.io/f/mpqkqzkg", {
+      method: "POST",
+      body: data,
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+
+    if (response.ok) {
+      document.getElementById("formSuccess").style.display = "block";
+      form.reset(); // clear form
+    } else {
+      alert("Something went wrong. Please try again.");
+    }
+
+  } catch (error) {
+    alert("Network error. Please try again.");
+  }
+});
+</script>
+</body>
+</html>
